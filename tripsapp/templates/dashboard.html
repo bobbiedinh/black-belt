@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <title>Dashboard</title>
+    <style>
+        h1{
+            display: inline-block;
+        }
+        .links{
+            display: inline-block;
+            margin-left: 600px;
+        }
+        .links a{
+            margin-left: 20px;
+        }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+        <div class="header">
+            <h1>Hello {{user.first}}</h1>
+            <div class="links">
+                <a href="/logout">Logout</a>
+                <a href="/trips/new" class="btn btn-primary">Create a new trip!</a>
+            </div>
+        </div>
+        <div class="jobs">
+            <h3>Your trips:</h3>
+            <table class="table table-striped">
+                <thead>
+                  <tr>
+                    <th scope="col">Destination</th>
+                    <th scope="col">Start Date</th>
+                    <th scope="col">End Date</th>
+                    <th scope="col">Plan</th>
+                    <th scope="col">Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                    {% if user_trips %}
+                    {% for trip in user_trips %}
+                    <tr>
+                        <th scope="row"><a href="/trips/{{trip.id}}">{{trip.location}}</a></th>
+                        <td>{{trip.start}}</td>
+                        <td>{{trip.end}}</td>
+                        <td>{{trip.plan}}</td>
+                        <td>
+                            {% if user == trip.creator %}
+                            <a href="/remove/{{trip.id}}">Remove</a> | 
+                            <a href="/trips/edit/{{trip.id}}">Edit</a>
+                            {% else %}
+                            <a href="/cancel/{{trip.id}}">Cancel</a>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                    {% endif %}
+                </tbody>
+              </table>
+        </div>
+        <div class="currentjobs">
+            <h3>Other people's trips</h3>
+            <table class="table table-striped">
+                <thead>
+                  <tr>
+                    <th scope="col">Destination</th>
+                    <th scope="col">Start Date</th>
+                    <th scope="col">End Date</th>
+                    <th scope="col">Plan</th>
+                    <th scope="col">Want to join?</th>
+                  </tr>
+                </thead>
+                <tbody>
+                    {% if trips %}
+                    {% for trip in trips %}
+                    {% if trip not in user_trips %}
+                    <tr>
+                        <th scope="row"><a href="/trips/{{trip.id}}">{{trip.location}}</a></th>
+                        <td>{{trip.start}}</td>
+                        <td>{{trip.end}}</td>
+                        <td>{{trip.plan}}</td>
+                        <td><a href="/join/{{trip.id}}">Join</a></td>
+                    </tr>
+                    {% endif %}
+                    {% endfor %}
+                    {% endif %}
+                </tbody>
+              </table>
+        </div>
+    </div>
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+  </body>
+</html>
